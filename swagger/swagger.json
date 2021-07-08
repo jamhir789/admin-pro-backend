@@ -2,19 +2,25 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Yet Another Node.js Blogg Application API",
+        "title": "Api Hospital",
         "description": "Yet Another Node.js Blogg Application API",
         "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "host": "localhost:3000",
-    "basePath": "/api/v1",
+    "host": "localhost:4000",
+    "basePath": "/api/",
     "tags": [
         {
-            "name": "Users",
+            "name": "Usuarios",
             "description": "API for users in the system"
+        },
+        {
+            "name": "Medicos"
+        },
+        {
+            "name": "Hospital"
         }
     ],
     "schemes": [
@@ -27,11 +33,35 @@
         "application/json"
     ],
     "paths": {
-        "/users": {
+        "/login": {
             "post": {
                 "tags": [
-                    "Users"
+                    "Usuarios"
                 ],
+                "summary": "Login User",
+                "parameters": [
+                    {
+                        "name": "Login_User",
+                        "in": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Login_user"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/usuarios": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Create User",
                 "description": "Create new user in system",
                 "parameters": [
                     {
@@ -39,7 +69,7 @@
                         "in": "body",
                         "description": "User that we want to create",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
                 ],
@@ -50,76 +80,106 @@
                     "200": {
                         "description": "New user is created",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
             },
             "get": {
                 "tags": [
-                    "Users"
+                    "Usuarios"
                 ],
                 "summary": "Get all users in system",
+                "description": "Get all users with pagination",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
             }
         },
-        "/users/{userId}": {
-            "parameters": [
-                {
-                    "name": "userId",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user that we want to find",
-                    "type": "string"
-                }
-            ],
+        "/usuarios/{userId}": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Usuarios"
                 ],
                 "summary": "Get user with given ID",
                 "responses": {
                     "200": {
                         "description": "User is found",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
             },
             "delete": {
                 "summary": "Delete user with given ID",
                 "tags": [
-                    "Users"
+                    "Usuarios"
                 ],
                 "responses": {
                     "200": {
                         "description": "User is deleted",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
             },
             "put": {
                 "summary": "Update user with give ID",
                 "tags": [
-                    "Users"
+                    "Usuarios"
                 ],
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "User with new values of properties",
+                        "description": "User that we want to create",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
                 ],
@@ -127,39 +187,431 @@
                     "200": {
                         "description": "User is updated",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/Usarios"
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            }
+        },
+        "/medicos": {
+            "post": {
+                "tags": [
+                    "Medicos"
+                ],
+                "summary": "Create Medico",
+                "description": "Create new medico in system",
+                "parameters": [
+                    {
+                        "name": "medico",
+                        "in": "body",
+                        "description": "medico that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Medico_Create"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New medico is created",
+                        "schema": {
+                            "$ref": "#/definitions/Medico_Create"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "Medicos"
+                ],
+                "summary": "Get all medicos in system",
+                "description": "Get all medicos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Medico"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            }
+        },
+        "/medicos/{medicosId}": {
+            "get": {
+                "tags": [
+                    "Medicos"
+                ],
+                "summary": "Get user with given ID",
+                "responses": {
+                    "200": {
+                        "description": "User is found",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Delete user with given ID",
+                "tags": [
+                    "Medicos"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is deleted",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update user with give ID",
+                "tags": [
+                    "Medicos"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is updated",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            }
+        },
+        "/hospitales": {
+            "post": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "Create Hospital",
+                "description": "Create new hospital in system",
+                "parameters": [
+                    {
+                        "name": "hospital",
+                        "in": "body",
+                        "description": "hospital that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Hospital_Crate"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New hospital is created",
+                        "schema": {
+                            "$ref": "#/definitions/Hospital_Crate"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "Get all hospital in system",
+                "description": "Get all hospital",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Hospital"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            }
+        },
+        "/hospitales/{hospitalId}": {
+            "get": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "Get hospital with given ID",
+                "responses": {
+                    "200": {
+                        "description": "Hospital is found",
+                        "schema": {
+                            "$ref": "#/definitions/Hospital"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hospitalId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of hospital that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Delete user with given ID",
+                "tags": [
+                    "Hospital"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is deleted",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update user with give ID",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is updated",
+                        "schema": {
+                            "$ref": "#/definitions/Usarios"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "x-token": []
+                    }
+                ]
             }
         }
     },
     "definitions": {
-        "User": {
+        "Usarios": {
             "required": [
                 "email",
-                "_id"
+                "uid",
+                "nombre"
             ],
             "properties": {
-                "_id": {
+                "uid": {
                     "type": "string",
                     "uniqueItems": true
+                },
+                "nombre": {
+                    "type": "string"
                 },
                 "email": {
                     "type": "string",
                     "uniqueItems": true
                 },
-                "lastName": {
+                "img": {
                     "type": "string"
                 },
-                "firstName": {
+                "role": {
+                    "type": "string"
+                },
+                "google": {
+                    "type": "boolean"
+                }
+            },
+            "Usuarios": {
+                "type": "array",
+                "$ref": "#/definitions/Usarios"
+            }
+        },
+        "Login_user": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "password": {
+                    "type": "string",
+                    "uniqueItems": true
+                }
+            }
+        },
+        "Medico_Create": {
+            "required": [],
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "img": {
+                    "type": "string"
+                },
+                "usuario": {
+                    "type": "string"
+                },
+                "hospital": {
                     "type": "string"
                 }
             }
         },
-        "Users": {
-            "type": "array",
-            "$ref": "#/definitions/User"
+        "Medico": {
+            "required": [],
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "img": {
+                    "type": "string"
+                },
+                "usuario": {
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "_id": {
+                        "type": "string"
+                    }
+                },
+                "hospital": {
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "_id": {
+                        "type": "string"
+                    }
+                },
+                "uid": {
+                    "type": "string"
+                }
+            }
+        },
+        "Hospital_Crate": {
+            "required": [],
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "Hospital": {
+            "_id": {
+                "type": "string"
+            },
+            "usuario": [
+                {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "nombre": {
+                "type": "string"
+            }
+        }
+    },
+    "securityDefinitions": {
+        "x-token": {
+            "type": "apiKey",
+            "name": "x-token",
+            "in": "header"
         }
     }
 }

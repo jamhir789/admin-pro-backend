@@ -5,17 +5,48 @@ const { generateJWT } = require('../helpers/jwt');
 
 
 
+const getIdUsuario = async(req,res)=>{
+    const uid = req.params.id;
+    try {
+        const UserId = await Usuario.findById(uid);
+
+        if (!UserId) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe el usuario'
+            });
+        }
+     
+    res.json({
+        ok: true,
+        UserId,
+    })
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: "error inesperado"
+        }); 
+    }
+}
+
 const getUsuarios = async (req, res) => {
-    const usuarios = await Usuario.find({}, 'nombre email role google');
+    const size = Number(req.query.size) || 0;
+
+    const [usuarios, total] = await Promise.all([
+        Usuario.find({}, '').skip(size).limit(size),
+        Usuario.countDocuments()
+    ]);
+
     res.json({
         ok: true,
         usuarios,
-        uid: req.uid
-    })
+        total
+    });
 }
 
 const crearUsuario = async (req, res = response) => {
-    console.log(req.body);
+
     const { email, password, nombre } = req.body;
 
     try {
@@ -139,5 +170,6 @@ module.exports = {
     getUsuarios,
     crearUsuario,
     actulizarUsuario,
-    borrarUsuario
+    borrarUsuario,
+    getIdUsuario
 }
